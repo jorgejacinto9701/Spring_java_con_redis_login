@@ -61,17 +61,17 @@ public class LoginController {
 					request.setAttribute("mensaje", "El usuario no existe");
 					return "intranetLogin";
 				} else {
-					List<Rol> roles = servicio.traerRolesDeUsuario(usuarioMysql.getIdUsuario());
-					List<Opcion> menus = servicio.traerEnlacesDeUsuario(usuarioMysql.getIdUsuario());
+					List<Rol> rolesMysql = servicio.traerRolesDeUsuario(usuarioMysql.getIdUsuario());
+					List<Opcion> menusMysql = servicio.traerEnlacesDeUsuario(usuarioMysql.getIdUsuario());
 					session.setAttribute("objUsuario", usuarioMysql);
-					session.setAttribute("objMenus", menus);
-					session.setAttribute("objRoles", roles);
+					session.setAttribute("objMenus", menusMysql);
+					session.setAttribute("objRoles", rolesMysql);
 					//Se agrega al CACHE el usuario, roles y menus del MYSQL
 					mapsUsuarios.put(usuarioMysql.getLogin(), gson.toJson(usuarioMysql));
 					jedis.hset("usuarios", mapsUsuarios);
-					mapsRoles.put(usuarioMysql.getLogin(), gson.toJson(roles));
+					mapsRoles.put(usuarioMysql.getLogin(), gson.toJson(rolesMysql));
 					jedis.hset("roles", mapsRoles);
-					mapsMenus.put(usuarioMysql.getLogin(), gson.toJson(usuarioMysql));
+					mapsMenus.put(usuarioMysql.getLogin(), gson.toJson(menusMysql));
 					jedis.hset("menus", mapsMenus);
 					return "intranetHome";
 				}
